@@ -66,3 +66,8 @@ SELECT produto, MIN(receita) as menor_receita FROM vendas;
 SELECT alunos.nome as aluno, COUNT(matriculas.id) as total_de_matriculas FROM alunos
 LEFT JOIN matriculas ON alunos.id = matriculas.aluno_id
 GROUP BY alunos.nome;
+
+SELECT produto, COUNT(id) as quantidade_de_transacoes FROM vendas
+GROUP BY produto
+ORDER BY quantidade_de_transacoes DESC
+LIMIT 1;
