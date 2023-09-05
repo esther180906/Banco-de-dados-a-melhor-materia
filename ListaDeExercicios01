@@ -62,3 +62,7 @@ ORDER BY total_de_livros_publicados DESC
 LIMIT 1;
 
 SELECT produto, MIN(receita) as menor_receita FROM vendas;
+
+SELECT alunos.nome as aluno, COUNT(matriculas.id) as total_de_matriculas FROM alunos
+LEFT JOIN matriculas ON alunos.id = matriculas.aluno_id
+GROUP BY alunos.nome;
