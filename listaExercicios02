@@ -114,3 +114,24 @@ DELIMITER ;
 DECLARE @resultado VARCHAR(255);
 CALL sp_AdicionarLivro('Novo Livro', 1, 2023, 300, 1, @resultado);
 SELECT @resultado;
+
+
+DELIMITER //
+
+CREATE PROCEDURE sp_AutorMaisAntigo(OUT nomeAutorMaisAntigo VARCHAR(255))
+BEGIN
+  SELECT Autor.Nome
+  INTO nomeAutorMaisAntigo
+  FROM Autor
+  WHERE Autor.Data_Nascimento = (
+    SELECT MIN(Data_Nascimento)
+    FROM Autor
+  );
+END;
+//
+
+DELIMITER ;
+
+DECLARE @nomeMaisAntigo VARCHAR(255);
+CALL sp_AutorMaisAntigo(@nomeMaisAntigo);
+SELECT @nomeMaisAntigo;
