@@ -39,3 +39,23 @@ CALL sp_ContarLivrosPorCategoria('Ficção Científica', @total);
 SELECT @total;
 
 
+DELIMITER //
+CREATE PROCEDURE sp_VerificarLivrosCategoria(IN categoriaNome VARCHAR(100), OUT possuiLivros BOOLEAN)
+BEGIN
+  DECLARE total INT;
+  CALL sp_ContarLivrosPorCategoria(categoriaNome, total);
+  
+  IF total > 0 THEN
+    SET possuiLivros = TRUE;
+  ELSE
+    SET possuiLivros = FALSE;
+  END IF;
+END;
+//
+DELIMITER ;
+
+DECLARE @temLivros BOOLEAN;
+CALL sp_VerificarLivrosCategoria('Ficção Científica', @temLivros);
+SELECT @temLivros;
+
+
