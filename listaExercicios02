@@ -135,3 +135,34 @@ DELIMITER ;
 DECLARE @nomeMaisAntigo VARCHAR(255);
 CALL sp_AutorMaisAntigo(@nomeMaisAntigo);
 SELECT @nomeMaisAntigo;
+
+
+DELIMITER //
+
+/* Criação da Stored Procedure sp_AdicionarLivro */
+CREATE PROCEDURE sp_AdicionarLivro(
+  IN tituloLivro VARCHAR(255),
+  IN editoraID INT,
+  IN anoPublicacao INT,
+  IN numeroPaginas INT,
+  IN categoriaID INT,
+  OUT resultado VARCHAR(255)  -- Parâmetro de saída para a mensagem de resultado
+)
+BEGIN
+  /* Manipulador de exceções para tratar tentativas de inserir um título de livro duplicado */
+  DECLARE EXIT HANDLER FOR 1062
+  BEGIN
+    SET resultado = 'Erro: O título do livro já existe na tabela.';
+  END;
+
+  /* Inserção do novo livro na tabela Livro */
+  INSERT INTO Livro (Titulo, Editora_ID, Ano_Publicacao, Numero_Paginas, Categoria_ID)
+  VALUES (tituloLivro, editoraID, anoPublicacao, numeroPaginas, categoriaID);
+  
+  /* Definição da mensagem de sucesso no parâmetro de saída */
+  SET resultado = 'Livro adicionado com sucesso.';
+END;
+//
+
+DELIMITER ;
+
